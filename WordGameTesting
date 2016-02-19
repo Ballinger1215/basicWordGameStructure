@@ -1,0 +1,149 @@
+package javaapplication11;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ *
+ * @author mark bollinger
+ */
+public class JavaApplication11 {
+
+    
+    public static void main(String[] args) throws IOException {
+        
+        Scanner scan = new Scanner(System.in);
+        int input = 0;
+
+        do {
+            System.out.println("Choose one of the options" + "\n 1. readDB" + "\n 2. writeDB" + "\n 3. Add Words" + "\n 4. Exit");
+            input = scan.nextInt();
+
+            if (input == 1) {
+                
+                readDB();
+                
+            } else if (input == 2) {
+                
+                writeDB();
+                
+            } else if (input == 3) {
+                
+               // addWords();
+                
+            }
+
+            } while (input != 4);
+
+    }
+    
+    public static void readDB() throws FileNotFoundException
+    {
+            ArrayList<String> dataBase = new ArrayList<>();
+            Scanner scan = new Scanner(System.in);
+            
+            File myFile = new File("Scores.doc");
+            Scanner inputFile = new Scanner(myFile);
+            
+            while (inputFile.hasNext()) {
+                
+                dataBase.add(inputFile.nextLine());
+                
+            }
+            
+            inputFile.close();
+            int numberOfRecords = dataBase.size();
+            String[][] dBase = new String[100][];
+            
+            for(int i =0; i < numberOfRecords; i++)
+                
+            {
+                
+                System.out.println(dataBase.get(i));
+                dBase[i] = dataBase.get(i).split(" ");
+                
+            }
+            
+//            for (int i = 0; i < dataBase.size(); i++)
+//                for(int j = 0; j < dBase[i].length; j++)
+//                    System.out.println(dBase[i][j]);
+            
+            System.out.println("Enter a username: ");
+            String userName = new String(scan.nextLine());
+            
+            int flag = -1;
+            for (int i = 0; i < numberOfRecords; i++)
+                
+                if (dBase[i][0].equalsIgnoreCase(userName))
+                {
+                    flag = i;
+                }
+            
+            if (flag == -1)
+            {
+                
+                System.out.println("Enter a password: ");
+                String password = new String(scan.nextLine());
+
+                dBase[numberOfRecords] = new String[3];
+                
+                dBase[numberOfRecords][0] = userName;
+                dBase[numberOfRecords][1] = password;
+                dBase[numberOfRecords][2] = "0";
+                
+                numberOfRecords++;
+                
+            }
+            
+            if (flag != -1)
+                {
+                    
+                    System.out.println("Enter new score: ");
+                    dBase[flag][2] = scan.nextLine();
+                    
+                }
+           
+            String filename = "Scores.doc";
+            PrintWriter outputfile = new PrintWriter(filename);
+            for (int i = 0; i < numberOfRecords; i++)
+            {
+                
+                for (int j = 0; j < dBase[i].length; j++)
+                    
+                {
+                    
+                    outputfile.printf("%s ", dBase[i][j]);
+                    System.out.println(dBase[i][j]);
+                    
+                }
+                outputfile.printf("\n");
+ 
+            }
+            
+            outputfile.close();
+            //ArrayList<ArrayList<String>> dBase = new ArrayList<ArrayList<String>> two array lists into a string
+            
+            //String[][] dBase = new String[100][3];     
+    }
+    
+    public static void writeDB() throws IOException
+    {
+        
+        String filename = "Scores.doc";
+        
+        FileWriter fw = new FileWriter(filename, true);
+        PrintWriter outputFile = new PrintWriter(fw);
+        
+        System.out.println("Enter a Username: ");
+        Scanner scan = new Scanner(System.in);
+        outputFile.printf("%s\n", scan.nextLine());
+        outputFile.close();
+        
+    }
+    
+}
